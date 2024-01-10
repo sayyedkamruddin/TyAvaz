@@ -41,9 +41,11 @@ export default function
                     <div className='NAVLIST max-[768px]:hidden'>
                         <ul className=' flex gap-10'>
                             <li><Link to='/' className=' hover:text-red-500 '>Home</Link></li>
+                            <li><Link to='/ai' className=' hover:text-red-500'>Ai</Link></li>
                             <li><Link to='/about' className=' hover:text-red-500'>About</Link></li>
                             <li><Link to='/document' className=' hover:text-red-500'>Document</Link></li>
                             <li><Link to='/contact' className=' hover:text-red-500'>Contact</Link></li>
+
                         </ul>
                     </div>
                     <div className='BTNS max-[768px]:hidden  '>

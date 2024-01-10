@@ -76,7 +76,9 @@ export default function Home() {
       </div> */}
       {/* footer end */}
       {/* footer start 2  */}
-      <div className=' FOOTER w-full bg-neutral-100 px-20 py-10 space-y-10'>
+      <div className='FOOTER'>
+
+      <div className='  w-full bg-neutral-100 px-20 py-5 space-y-10'>
         <div className='Footer-1 flex justify-between items-center px-10'>
           <div className='LOGO text-3xl font-bold  '>
             <Link to='/'>AvAz</Link>
@@ -90,10 +92,7 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className='FOOTER w-full text-center flex flex-col  gap-4  '>
-          <p>
-            &#169; Copyrights , All Rights Reserved
-          </p>
+        <div className='FOOTER w-full text-center  '>
           <div className='ALL-social-Media-LINK flex w-full justify-center text-2xl gap-5 max-[768px]:text-xl '>
             <a href='https://www.instagram.com/' target='blank' ><FaSquareInstagram /></a>
             <a href='https://www.facebook.com/' target='blank'><FaFacebookSquare /></a>
@@ -102,7 +101,11 @@ export default function Home() {
           </div>
 
         </div>
+      </div>
 
+        <p className=' text-center bg-black text-white p-5'>
+            &#169; Copyrights , All Rights Reserved
+          </p>
       </div>
       {/* footer end 2  */}
 
