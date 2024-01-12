@@ -1,14 +1,15 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
-export default function
-    () {
+export default function() {
     // const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
-    // const location=useLocation();
+    const location=useLocation();
     const [bgcolor, setbgcolor] = useState("red")
     const [fgcolor, setfgcolor] = useState("white")
+    const [path,setPath]=useState(true)
+    console.log(location.pathname==="/ai")
     const hovered = () => {
         setbgcolor(() => {
             return "transparent"
@@ -32,12 +33,14 @@ export default function
     }
     return (
         <>
+        {
+            location.pathname!="/ai" &&
             <div className=''>
-
                 <div className='NAVBAR flex justify-between  px-10 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
                     <div className='LOGO text-3xl font-bold  '>
                         <Link to='/'>AvAz</Link>
                     </div>
+                    
                     <div className='NAVLIST max-[768px]:hidden'>
                         <ul className=' flex gap-10'>
                             <li><Link to='/' className=' hover:text-red-500 '>Home</Link></li>
@@ -80,8 +83,9 @@ export default function
                     }
 
                 </div>
-                
+           
             </div>
+        }
 
         </>
     )

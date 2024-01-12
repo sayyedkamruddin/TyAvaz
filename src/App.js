@@ -8,7 +8,6 @@ import About from './components/About';
 import Document from './components/Document';
 import Chatbot from './components/Chatbot';
 function App() {
- 
   
   return (
     <div >
