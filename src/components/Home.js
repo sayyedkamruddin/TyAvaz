@@ -76,7 +76,7 @@ export default function Home() {
       </div> */}
       {/* footer end */}
       {/* footer start 2  */}
-      <div className='FOOTER'>
+      {/* <div className='FOOTER'>
 
       <div className='  w-full bg-neutral-100 px-20 py-5 space-y-10'>
         <div className='Footer-1 flex justify-between items-center px-10'>
@@ -106,7 +106,7 @@ export default function Home() {
         <p className=' text-center bg-black text-white p-5'>
             &#169; Copyrights , All Rights Reserved
           </p>
-      </div>
+      </div> */}
       {/* footer end 2  */}
 
 

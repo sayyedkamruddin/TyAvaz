@@ -7,6 +7,7 @@ import Contact from './components/Contact';
 import About from './components/About';
 import Document from './components/Document';
 import Chatbot from './components/Chatbot';
+import Footer from './components/Footer';
 function App() {
   
   return (
@@ -26,6 +27,7 @@ function App() {
           
 
         </Routes>
+        <Footer/>
       </Router>
     </div>
   );

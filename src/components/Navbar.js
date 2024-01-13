@@ -5,11 +5,11 @@ import { IoClose } from "react-icons/io5";
 export default function() {
     // const windowSize = useRef([window.innerWidth, window.innerHeight]);
 
-    const location=useLocation();
+    const location=useLocation().pathname;
     const [bgcolor, setbgcolor] = useState("red")
     const [fgcolor, setfgcolor] = useState("white")
     const [path,setPath]=useState(true)
-    console.log(location.pathname==="/ai")
+    console.log(location==="/ai")
     const hovered = () => {
         setbgcolor(() => {
             return "transparent"
@@ -27,14 +27,17 @@ export default function() {
         })
     }
 
-    const [open, setopen] = useState(false)
+    const [open, setopen] = useState(false)   //use for navbar tagggle menu on responsive design
     const Clicks = () => {
         setopen(!open)
     }
     return (
         <>
         {
-            location.pathname!="/ai" &&
+            location!="/ai" &&
+
+                    
+                //navbar  for device greater than 768px 
             <div className=''>
                 <div className='NAVBAR flex justify-between  px-10 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
                     <div className='LOGO text-3xl font-bold  '>
@@ -43,11 +46,11 @@ export default function() {
                     
                     <div className='NAVLIST max-[768px]:hidden'>
                         <ul className=' flex gap-10'>
-                            <li><Link to='/' className=' hover:text-red-500 '>Home</Link></li>
-                            <li><Link to='/ai' className=' hover:text-red-500'>Ai</Link></li>
-                            <li><Link to='/about' className=' hover:text-red-500'>About</Link></li>
-                            <li><Link to='/document' className=' hover:text-red-500'>Document</Link></li>
-                            <li><Link to='/contact' className=' hover:text-red-500'>Contact</Link></li>
+                            <li><Link to='/' className={`${location==="/"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Home</Link></li>
+                            <li><Link to='/ai' className={`${location==="/ai"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Ai</Link></li>
+                            <li><Link to='/about' className={`${location==="/about"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>About</Link></li>
+                            <li><Link to='/document' className={`${location==="/document"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Document</Link></li>
+                            <li><Link to='/contact' className={`${location==="/contact"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Contact</Link></li>
 
                         </ul>
                     </div>
@@ -59,7 +62,8 @@ export default function() {
                     </div>
                
                     {open &&
-                        < >
+                        < > 
+                            {/* responsive close button */}
                             <div className=' absolute'>
                                 {console.log("drop down")}
                             </div>
@@ -68,8 +72,12 @@ export default function() {
                     }
 
                     {!open &&
+                            // menu button 
+
                         <button className='text-4xl hidden max-[768px]:block' onClick={Clicks}> <FiMenu /></button>
                     }
+
+                    {/*navbar  for device under 768px  */}
                     { open &&
 
                     <div className={` z-50 absolute hidden max-[768px]:block  top-[100%] left-0 bg-red-500 text-white w-full p-10 transition ease-in-out delay-200 duration-300 `}  >
