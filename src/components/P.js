@@ -1,57 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+import React from 'react'
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-
-    <!-- <div class="">
-        <textarea rows=" 10" id="txt">...</textarea>
-        <button onclick="play()">start</button>
-        <button onclick="pause()">stop</button>
-
-    </div> -->
-    <audio id="audio" controls></audio>
-<canvas id="audioSpectrum"></canvas>
-<button id="startRecording">Start Recording</button>
-<button id="stopRecording" disabled>Stop Recording</button>
-
-<script>
-//     let sr=window.webkitSpeechRecognition || window.SpeechRecognition
-//     let spRec=new sr()
-//     spRec.continuous=true
-//     spRec.interimResults=true
-//     spRec.onresult=(e)=>{
-//         let d=document.getElementById("txt")
-//         let reorded1,l
-//         // let reorded=Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}).join("")
-
-//         reorded1=Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}).join("")
-//         console.log(reorded1)
-       
-        
-//         // console.log(Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}))
-//         // d.innerHTML=reorded
-//     }
-//    const interval= setInterval(() => {
-//         let i=0
-//         // console.log(i);
-//     }, 1000);
-//     setTimeout(() => {
-        
-//         clearInterval(interval)
-//     }, 5000);
-//     const play=()=>{
-//         spRec.start()
-//     }
-//     const pause=()=>{
-//         spRec.stop()
-//     }
-//     console.log(spRec);
+export default function P() {
+    
+  return (
+    <div>
 
 // Access necessary elements
 const audioElement = document.getElementById('audio');
@@ -89,7 +41,7 @@ function draw() {
   for (let i = 0; i < bufferLength; i++) {
     barHeight = dataArray[i];
 
-    ctx.fillStyle = rgb(50, barHeight+1, 50);
+    ctx.fillStyle = rgb(50, ${barHeight + 100}, 50);
     ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
 
     x += barWidth + 1;
@@ -113,7 +65,6 @@ stopRecordingButton.addEventListener('click', () => {
   startRecordingButton.disabled = false;
   stopRecordingButton.disabled = true;
 });
-</script>
-</body>
-
-</html>
+    </div>
+  )
+}

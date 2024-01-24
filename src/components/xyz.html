@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <style>
+    html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  margin: 4rem 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.code {
+  background: #fafafa;
+  border-radius: 5px;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  max-width: 300px;
+}
+
+.card:hover,
+.card:focus,
+.card:active {
+  color: #0070f3;
+  border-color: #0070f3;
+}
+
+.card h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <main>
+  <audio id="audio" controls></audio>
+  <canvas id="audioSpectrum"></canvas>
+  <button id="startRecording">Start Recording</button>
+  <button id="stopRecording" disabled>Stop Recording</button>
+
+
+  <script type="module" src="script.js"></script>
+
+  <!--
+    This script places a badge on your repl's full-browser view back to your repl's cover
+    page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
+    teal, blue, blurple, magenta, pink!
+  -->
+  <script >
+    // Access necessary elements
+const audioElement = document.getElementById('audio');
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+const canvas = document.getElementById('audioSpectrum');
+const ctx = canvas.getContext('2d');
+const startRecordingButton = document.getElementById('startRecording');
+const stopRecordingButton = document.getElementById('stopRecording');
+
+// Set up audio processing
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then((stream) => {
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+  })
+  .catch((error) => console.error('Error accessing microphone:', error));
+
+// Set up canvas for spectrum visualization
+analyser.fftSize = 256;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// Draw audio spectrum
+function draw() {
+  analyser.getByteFrequencyData(dataArray);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const barWidth = (canvas.width / bufferLength) * 2.5;
+  let barHeight;
+  let x = 0;
+
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i];
+
+    ctx.fillStyle = `rgb(50, ${barHeight + 100}, 50)`;
+    ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+    x += barWidth + 1;
+  }
+
+  requestAnimationFrame(draw);
+}
+
+// Event listeners for recording buttons
+startRecordingButton.addEventListener('click', () => {
+  audioContext.resume().then(() => {
+    startRecordingButton.disabled = true;
+    stopRecordingButton.disabled = false;
+
+    // Start drawing audio spectrum
+    draw();
+  });
+});
+
+stopRecordingButton.addEventListener('click', () => {
+  startRecordingButton.disabled = false;
+  stopRecordingButton.disabled = true;
+});
+
+  </script>
+</body>
+
+</html>

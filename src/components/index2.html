@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microphone Analyzer</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas {
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Microphone Analyzer</h1>
+    <canvas id="frequencyCanvas" width="600" height="300"></canvas>
+
+    <script>
+        let audioContext;
+        let analyser;
+        let canvas;
+        let canvasContext;
+
+        function init() {
+            // Initialize the audio context
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Create an analyser node
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            // Get microphone input
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(handleMicrophone)
+                .catch(function (err) {
+                    console.error("Error accessing microphone:", err);
+                });
+
+            // Set up canvas for visualization
+            canvas = document.getElementById('frequencyCanvas');
+            canvasContext = canvas.getContext('2d');
+
+            // Start animation loop
+            draw();
+        }
+
+        function handleMicrophone(stream) {
+            // Connect the microphone stream to the analyser
+            const microphone = audioContext.createMediaStreamSource(stream);
+            microphone.connect(analyser);
+        }
+
+        function draw() {
+            // Schedule the next animation frame
+            requestAnimationFrame(draw);
+
+            // Get frequency data from the analyser
+            analyser.getByteFrequencyData(dataArray);
+
+            // Clear the canvas
+            canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the frequency data as a bar graph
+            const barWidth = (canvas.width / dataArray.length) * 2.5;
+            let barHeight;
+            let x = 0;
+
+            for (let i = 0; i < dataArray.length; i++) {
+                barHeight = dataArray[i];
+
+                canvasContext.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+                canvasContext.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+                x += barWidth + 1;
+            }
+        }
+
+        // Initialize the microphone analyzer when the page loads
+        window.onload = init;
+    </script>
+</body>
+</html>

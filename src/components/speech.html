@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speech to Text</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .container {
+      width: 400px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      text-align: center;
+      margin-top: 0;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Speech to Text</h1>
+    <textarea id="input-text" placeholder="Speak here..." rows="6"></textarea>
+    <button id="stop-btn" disabled>Stop</button>
+  </div>
+
+  <script>
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+    let isRecording = false;
+    let recordedChunks = [];
+
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    recognition.onresult = function(event) {
+      const result = event.results[0][0].transcript.trim();
+      console.log('Speech Recognition Result:', result);
+      
+      if (result.toLowerCase() === 'hello') {
+        convertSpeechToText();
+      } else if (result.toLowerCase() === 'stop') {
+        stopRecording();
+      }
+    };
+
+    recognition.onerror = function(event) {
+      console.error('Speech Recognition Error:', event.error);
+    };
+
+    recognition.onstart = function() {
+      isRecording = true;
+      recordedChunks = [];
+      document.getElementById('stop-btn').disabled = false;
+    };
+
+    recognition.onend = function() {
+      isRecording = false;
+      document.getElementById('stop-btn').disabled = true;
+      recognition.start();
+    };
+
+    recognition.ondataavailable = function(event) {
+      recordedChunks.push(event.data);
+    };
+
+    function convertSpeechToText() {
+      const inputTextArea = document.getElementById('input-text');
+      
+      if (!isRecording) {
+        recognition.start();
+      }
+      
+      recognition.onresult = function(event) {
+        const result = event.results[0][0].transcript.trim();
+        inputTextArea.value += result + ' ';
+        
+        if (result.toLowerCase() === 'stop') {
+          stopRecording();
+        }
+      };
+    }
+
+    function stopRecording() {
+      recognition.stop();
+      const audioBlob = new Blob(recordedChunks, { type: 'audio/ogg; codecs=opus' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audioElement = document.createElement('audio');
+      audioElement.src = audioUrl;
+      audioElement.controls = true;
+      inputTextArea.parentNode.insertBefore(audioElement, inputTextArea.nextSibling);
+    }
+
+    document.getElementById('stop-btn').addEventListener('click', stopRecording);
+  </script>
+</body>
+</html>
