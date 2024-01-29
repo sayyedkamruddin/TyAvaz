@@ -14,10 +14,12 @@ import { IoSearch } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import Loader from './Loader';
 import micGif from './googleVoice.gif'
-export default function () {
+export default function ChatbotNew() {
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
   const [input, setInput] = useState("")
+  const [speehc, setSpeehc] = useState('');
+  const [recognition, setRecognition] = useState(null);
   let u
   const [micon, setMicon] = useState(false)
 
@@ -26,42 +28,68 @@ export default function () {
     console.log(input)
     setInput(e.target.value)
   }
-
-  //.................Speech API's Codes SECTION Start.....................................
-
-  let speech = window.webkitSpeechRecognition || window.SpeechRecognition, speechText
-  let SpeechRecognizer = new speech()
-  SpeechRecognizer.continuous = true
-  SpeechRecognizer.interimResults = true
-  SpeechRecognizer.onresult = (e) => {
-    speechText = Array.from(e.results).map((r) => { return r[0] }).map((t) => { return t.transcript }).join("")
-    console.log(speechText)
-    setInput(speechText)
-    // d.innerHTML=reorded
-  }
-
-  SpeechRecognizer.onspeechend = () => {
-    // SpeechRecognizer.continuous = false
-    console.log("end");
-    // setInput("")
-    setMicon(false)
-  }
-
-  // voice click logic
-  const VoiceInputQuery = () => {
-    SpeechRecognizer.start()
-    setMicon(true)
-  }
-
-
-
-
   const micClose = () => {
     // SpeechRecognizer.continuous = false
-    SpeechRecognizer.stop()
+    //   SpeechRecognizer.stop()
     setMicon(false)
 
   }
+
+  //.................Speech API's Codes SECTION Start.....................................
+  var v
+  useEffect(() => {
+    const initializeSpeechRecognition = () => {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.lang = 'en-US';
+      recognitionInstance.interimResults = true;
+      //   recognitionInstance.continuous = true;
+
+      recognitionInstance.onresult = (event) => {
+        const last = event.results.length - 1;
+        const command = event.results[last][0].transcript;
+        setSpeehc(command);
+        v = command
+
+      };
+
+      recognitionInstance.onspeechend = () => {
+        console.log(v);
+
+        setTimeout(() => {
+          setInput(v)
+          // send1(v)
+          setMicon(false)
+          setSpeehc("")
+        }, 2000);
+      }
+      setRecognition(recognitionInstance);
+    };
+
+    initializeSpeechRecognition();
+
+    return () => {
+      if (recognition) {
+        recognition.abort();
+      }
+    };
+  }, []);
+
+  const VoiceInputQuery = () => {
+    setMicon(true)
+    if (recognition) {
+      recognition.start();
+    }
+  };
+
+
+
+
+
+
+
+
+
 
   //.................Speech API's Codes SECTION End.....................................
 
@@ -71,7 +99,6 @@ export default function () {
   //send function
   const send = async (e) => {
     // e.preventDefault()
-    SpeechRecognizer.stop()
     let CHATS_DivUser = document.getElementById("chats");
     let eleU = document.createElement("div")
     eleU.className += "USER float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-emerald-400 bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
@@ -83,10 +110,30 @@ export default function () {
     let eleA = document.createElement("div")
     eleA.className += "AVAZ float-left self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // let a = `AVAZ AI.......${input}`
-    // eleA.innerText += await fetchPost(u)
-    eleA.innerHTML += u
+    eleA.innerText += await fetchPost(u)
+    //   eleA.innerHTML += u
     CHATS_DivUser.appendChild(eleA)
   };
+
+
+  const send1 = async (e) => {
+    // e.preventDefault()
+    let CHATS_DivUser = document.getElementById("chats");
+    let eleU = document.createElement("div")
+    eleU.className += "USER float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-emerald-400 bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.innerHTML = e
+    CHATS_DivUser.appendChild(eleU)
+    u = e
+
+    setInput("")
+    let eleA = document.createElement("div")
+    eleA.className += "AVAZ float-left self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    // let a = `AVAZ AI.......${input}`
+    eleA.innerText += await fetchPost(u)
+    // eleA.innerHTML += u
+    CHATS_DivUser.appendChild(eleA)
+  };
+
 
   // useEffect(()=>{
   //   // fetch()
@@ -123,40 +170,55 @@ export default function () {
   }
 
   //.................Backend API's Codes SECTION End.....................................
-
   return (
     <>
       {<div className=' borde-4 border-red-800 flex w-full h-dvh overflow-hidden  '>
         {micon &&
-          <div className='    absolute w-full h-full bg-black bg-opacity-40 justify-center items-center flex ' style={{zIndex:"99"}}>
-            <div className='rounded-lg w-96 h-96 border-2 bg-white flex flex-col '>
+          <div className='    absolute w-full h-full bg-black bg-opacity-40 justify-center items-center flex ' style={{ zIndex: "99" }}>
+            <div className=' p-4 rounded-lg w-96 h-96 border-2 bg-white flex flex-col '>
               <button className='w-full flex justify-end' onClick={micClose}><IoClose></IoClose></button>
               <div className=' flex flex-col items-center'>
                 <p>Listening.... </p>
                 <img src={micGif} className=' w-20' />
               </div>
               <div className='bordr w-full p-2 flex justify-center'>
-                <p className='bordr w-[70%] '>{input}</p>
+                <p className='bordr w-[70%] '>{speehc}</p>
               </div>
             </div>
           </div>}
-        <div className='SIDE-NAV bordr z-50 border-black w-[12%] h-full p-2 py-6 space-y-10 bg-opacity-80 bg-emerald-300 shadow-2xl max-[768px]:hidden'>
-          <div className=' w-3/6  border rounded-full m-auto bg-white  '>
+        <div className='SIDE-NAV bordr relative z-50 border-black w-[18%] h-full flex flex-col items-center p-4 space-y-10 bg-opacity-80 bg-emerald-300 shadow-2xl max-[768px]:hidden'>
+          <div className=' w-5/6 grid grid-flow-col items-center font-bold '>
             <Link to='/'>
               <LuUserCircle2 className='w-full h-full ' />
             </Link>
+            <p className=' text-2xl'>AvAz</p>
           </div>
           <div className='SIDE_MENU w-6/6 m-auto   '>
             <ul className=' w-full p-2 text-xl font-semibold space-y-5 text-whit   max-lg:text-sm '>
-              <li><Link to='/' className={` hover:text-red-500 flex text-center items-center gap-2 `}> Home</Link></li>
-              <li><Link to='/ai' className={` text-${loc === "/ai" ? "red" : "black"}-500 hover:text-${loc === "/ai" ? "black" : "red"} flex text-center items-center gap-2 `}>Ai</Link></li>
-              <li><Link to='/about' className={` hover:text-red-500 flex text-center items-center gap-2 `}>About</Link></li>
-              <li><Link to='/document' className={` hover:text-red-500 flex text-center items-center gap-2 `}>Document </Link></li>
-              <li><Link to='/contact' className={` hover:text-red-500 flex text-center items-center gap-2 `}>Contact</Link></li>
+              <li><Link to='/' className={` hover:text-red-500 flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
+              <li><Link to='/ai' className={` text-${loc === "/ai" ? "red" : "black"}-500 hover:text-${loc === "/ai" ? "black" : "red"} flex text-center items-center gap-2 `}><BsRobot /> Ai</Link></li>
+              <li><Link to='/about' className={` hover:text-red-500 flex text-center items-center gap-2 `}><FcAbout /> About</Link></li>
+              <li><Link to='/document' className={` hover:text-red-500 flex text-center items-center gap-2 `}><TiDocumentText /> Document </Link></li>
+              <li><Link to='/contact' className={` hover:text-red-500 flex text-center items-center gap-2 `}> <TiContacts /> Contact</Link></li>
             </ul>
           </div>
+
+          <div className='PROFILE absolute bottom-[7%] border p-4  rounded-xl'>
+            <Link to='/'>
+              <div className=' flex items-center gap-3'>
+                <LuUserCircle2 className=' w-14 h-full' />
+                <div className=' text-sm'>
+                  <p>NAME-XYZ</p>
+                  <p>XYZ@gmail.com</p>
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
-        <div className='AI-CHAT bordr border-green-500 w-[68%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
+        <div className='AI-CHAT bordr  border-green-500 w-[70%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
+          {load && <div className=' absolute flex top-[50%] '>
+            <Loader />
+          </div>}
           <div className=' text-center font-bold shadow-sm p-2 w-full  grid-cols-4 max-[768px]:grid grid-flow-row-dense   '>
             <button className=' md:hidden '><FiMenu /></button>
             <p className='col-span-2'>CONTENT : CHATS </p>
@@ -190,7 +252,9 @@ I'm sorry, I couldn't understand what you said. Can you please rephrase your sta
           <div className='AVAZ float-left m-4 w-[40%] self-start break-words  border-2 p-2 rounded-e-2xl rounded-ss-2xl bg-red-500 text-white'>
           youHello! I'm an AI language model, so I don't have feelings, but I'm here to assist you. How can I help you today?
           </div> */}
-            {load && <Loader />}
+            {/* {load && <Loader />} */}
+
+
           </div>
           <div className=' w-full h-36 borde max-md:h-20 '>
             <div className='INPUT-BAR border-2     w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>

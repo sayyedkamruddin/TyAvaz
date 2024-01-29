@@ -8,6 +8,7 @@ import About from './components/About';
 import Document from './components/Document';
 import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
+import ChatbotNew from './components/ChatbotNew';
 function App() {
   
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
-          <Route path='/ai' element={<Chatbot/>}/>
+          <Route path='/ai' element={<ChatbotNew />}/>
 
 
           
