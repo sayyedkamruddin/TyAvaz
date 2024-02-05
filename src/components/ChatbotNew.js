@@ -10,6 +10,7 @@ import { FcAbout } from "react-icons/fc";
 import { FaMicrophoneAlt } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import axios from "axios"
+import { IoMdArrowDropleft } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import Loader from './Loader';
@@ -22,11 +23,11 @@ export default function ChatbotNew() {
   const [recognition, setRecognition] = useState(null);
   let u
   const [micon, setMicon] = useState(false)
-
   //input button logic
   const inputQuery = (e) => {
     console.log(input)
     setInput(e.target.value)
+
   }
   const micClose = () => {
     // SpeechRecognizer.continuous = false
@@ -100,25 +101,53 @@ export default function ChatbotNew() {
   const send = async (e) => {
     // e.preventDefault()
     let CHATS_DivUser = document.getElementById("chats");
+
     let eleU = document.createElement("div")
-    eleU.className += "USER float-right  self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
-    eleU.innerHTML = input
+    eleU.className += "USER float-right  self-end m-4 w-[40%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.innerText = input
     CHATS_DivUser.appendChild(eleU)
-    u = input
+    // u = input
+
+
+
+
+    u = `There are several different types of PCs, each with their own specific purpose and configuration:
+    1. Desktop PCs: These are the traditional computers that are typically placed on a desk or table. They consist of a computer case that houses the motherboard, CPU, memory, storage, and other components. Desktop PCs are typically larger in size and offer more customization options, allowing users to upgrade or replace components as needed.
+    2. Laptop PCs: Also known as notebooks, these are portable computers that are designed for use on the go. They are lightweight and compact, with all the necessary components integrated into a single unit. Laptops typically have a built-in keyboard, a touchpad, and a display screen. They are powered by batteries and can be easily transported.
+    3. All-in-One PCs: These are computers where the monitor and the central processing unit (CPU) are integrated into a single unit. The all-in-one PC eliminates the need for a separate computer tower and allows for a more compact and streamlined design. They are often used in homes or offices where space is limited.
+    4. Gaming PCs: These are high-performance computers specifically designed for gaming purposes. They are equipped with powerful processors, dedicated graphics cards, and ample memory and storage capacity. Gaming PCs are built to handle demanding games and provide a smooth gaming experience with high-quality graphics.
+    5. Workstations: These are powerful computers tailored for professional purposes like graphic design, video editing, 3D modeling, and scientific calculations. Workstations are equipped with high-performance processors, large amounts of RAM, and dedicated graphics cards to handle resource-intensive tasks efficiently.
+    6. Mini PCs: These are small form-factor computers that are compact and space-saving. Mini PCs are typically used for basic tasks like web browsing, media streaming, and office work. They are less powerful compared to desktop or gaming PCs but offer the advantage of portability and low power consumption.
+    7. Server PCs: These are specialized computers designed to host websites, applications, or files that can be accessed by multiple users over a network. Server PCs are typically more powerful and have additional storage capacity to handle the demands of serving data to multiple clients.
+    8. Thin Clients: These are lightweight computers that rely on a network connection to access specific programs and data stored on a remote server. Thin clients are often used in workplaces where users need access to centralized computing resources and do not require powerful individual computers.
+    These are just a few examples of the many types of PCs available in the market. The choice of PC depends on the specific requirements and intended usage of the user or organization.`
 
     setInput("")
     let eleA = document.createElement("div")
-    eleA.className += "AVAZ float-left bg-white self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ hover:text-red-500  float-left bg-white self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // let a = `AVAZ AI.......${input}`
-    eleA.innerText += await fetchPost(u)
-    //   eleA.innerHTML += u
+    // eleA.innerText += await fetchPost(u)
+    // let ans = await fetchPost(u)
+    let ans = u
+    for (let i = 0; i < ans.length; i++) {
+      const element = ans[i];
+      window.scrollTo(0, CHATS_DivUser.scrollHeight)
+
+      setTimeout(() => {
+        eleA.innerText += element
+      }, i * 2);
+    }
     CHATS_DivUser.appendChild(eleA)
   };
+
+
+
 
 
   const send1 = async (e) => {
     // e.preventDefault()
     let CHATS_DivUser = document.getElementById("chats");
+    // window.scrollTo(0, CHATS_DivUser.scrollHeight)
     let eleU = document.createElement("div")
     eleU.className += "USER float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
     eleU.innerHTML = e
@@ -169,14 +198,68 @@ export default function ChatbotNew() {
     }
   }
 
+
+
+
+
+  const increaseHieght = (e) => {
+    e.target.style.height = 'auto'
+    let key = e.key
+
+    e.target.style.height = `${e.target.scrollHeight}px`;
+    if (key === 'Enter') {
+      // e.target.style.overflowY='hidden'
+
+      send()
+      e.target.style.height = 'auto'
+    }
+
+
+
+
+
+  }
+
+
   //.................Backend API's Codes SECTION End.....................................
+
+const Switch=(event)=>{
+  let pE=event.target.parentElement
+
+console.log(pE);
+if (event.target.style.transform=="translateX(20px)") {
+  event.target.style.transform="translateX(0px)"
+  event.target.parentElement.style.backgroundColor=''
+} else {
+  event.target.style.transform="translateX(20px)"
+  event.target.parentElement.style.backgroundColor='#3FDD79'
+
+
+  
+}
+}
+const [open, setopen] = useState(false) 
+const [openHist, setopenHist] = useState(false) 
+
+
+const menu=()=>{
+  console.log(open);
+setopen(!open)
+setopenHist(false)
+}
+
+const history=()=>{
+  setopenHist(!openHist)
+  setopen(false)
+}
+
   return (
     <>
-      {<div className=' bordr-4 border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(22,23,25)]  '>
+      {<div className=' bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(22,23,25)]  '>
         {micon &&
           <div className='    absolute w-full h-full bg-black bg-opacity-40 justify-center items-center flex ' style={{ zIndex: "99" }}>
             <div className=' p-4 rounded-lg w-96 h-96 border-2 bg-white flex flex-col '>
-              <button className='w-full flex justify-end' onClick={micClose}><IoClose></IoClose></button>
+              <button className='w-full flex justify-end' onClick={micClose}><IoClose/></button>
               <div className=' flex flex-col items-center'>
                 <p>Listening.... </p>
                 <img src={micGif} className=' w-20' />
@@ -186,14 +269,19 @@ export default function ChatbotNew() {
               </div>
             </div>
           </div>}
-        <div className='SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]    bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 bg-emerald00 shadw-2xl max-[768px]:hidden'>
+          
+        <div className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
+             max-[768px]:${open?'translate-x-[0px]':'-translate-x-[200px]'}`}>                
+                <button className=' absolute right-0 p-2 text-white md:hidden ' onClick={menu}><IoClose/></button>
+
           <div className=' w-5/6 grid grid-flow-col items-center font-bold text-[#3FDD79]'>
             <Link to='/'>
               <LuUserCircle2 className='w-full h-full ' />
             </Link>
             <p className=' text-2xl'>AvAz</p>
+            
           </div>
-          <div className='SIDE_MENU w-6/6 m-auto text-neutral-500   '>
+          <div className='SIDE_MENU w-6/6 m-auto text-neutral-500 '>
             <ul className=' w-full p-2 text-xl font-semibld space-y-4 text-whit   max-lg:text-sm '>
               <li><Link to='/' className={` hover:text-white flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
               <li><Link to='/ai' className={`  text-${loc === "/ai" ? "white" : "black"} hover:text-${loc === "/ai" ? "white" : ""} flex text-center items-center gap-2 `}><BsRobot /> Ai</Link></li>
@@ -215,72 +303,60 @@ export default function ChatbotNew() {
             </Link>
           </div>
         </div>
-        <div className=' w-full flex flex-row m-4 rounded-xl borer overflow-hidden'>
-        <div className='AI-CHAT bordr bg-[rgb(37,38,40)]  border-green-500 w-[75%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
-          {load && <div className=' absolute flex top-[50%] '>
-            <Loader />
-          </div>}
-          <div className=' text-center font-bold shadow-sm p-2 w-full  grid-cols-4 max-[768px]:grid grid-flow-row-dense   '>
-            <button className=' md:hidden '><FiMenu /></button>
-            <p className='col-span-2 text-neutral-400'>CONTENT : CHATS </p>
-          </div>
-          <div className='CHATS  w-full h-full bordr-8 flex flex-col pb-[10%]   scroll-auto overflow-auto space-y-8 p-4 ' id='chats'>
 
-            {/* <div className='USER float-right m-4 w-[40%]  border-2 p-2 rounded-s-2xl rounded-se-2xl bg-red-500 text-white '>
-            Hii how are you and where are you from
-          </div> */}
-            {/* <div className='USER float-right m-4 w-[40%]  border-2 p-2 rounded-s-2xl rounded-se-2xl bg-red-500 text-white '>
-            {input}
-          </div>
-          <div className='AVAZ float-left m-4 w-[40%]   border-2 p-2 rounded-e-2xl rounded-ss-2xl bg-red-500 text-white'>
-            Hii I am fine i am a Artificial Language
-          </div> */}
-            {/* <div className='USER float-right m-4 w-[40%] self-end break-words  border-2 p-2 rounded-s-2xl rounded-se-2xl bg-red-500 text-white'>
-hii how are you
-          </div>
-          <div className='AVAZ float-left m-4 w-[40%] self-start break-words  border-2 p-2 rounded-e-2xl rounded-ss-2xl bg-red-500 text-white'>
-youHello! I'm an AI language model, so I don't have feelings, but I'm here to assist you. How can I help you today?
-          </div>
-          <div className='USER float-right m-4 w-[40%] self-end break-words  border-2 p-2 rounded-s-2xl rounded-se-2xl bg-red-500 text-white'>
-slfljljwlkegjlewrjgl
-          </div>
-          <div className='AVAZ float-left m-4 w-[40%] self-start break-words  border-2 p-2 rounded-e-2xl rounded-ss-2xl bg-red-500 text-white'>
-I'm sorry, I couldn't understand what you said. Can you please rephrase your statement or ask a question?
-          </div>
-          <div className='USER float-right m-4 w-[40%] self-end break-words  border-2 p-2 rounded-s-2xl rounded-se-2xl bg-red-500 text-white'>
-          hii how are you
-          </div>
-          <div className='AVAZ float-left m-4 w-[40%] self-start break-words  border-2 p-2 rounded-e-2xl rounded-ss-2xl bg-red-500 text-white'>
-          youHello! I'm an AI language model, so I don't have feelings, but I'm here to assist you. How can I help you today?
-          </div> */}
-            {/* {load && <Loader />} */}
-
-
-          </div>
-          <div className=' w-full h-36 border-t border-neutral-700 max-md:h-20 items-center flex '>
-            <div className='INPUT-BAR bordr-2 bg-[rgb(22,23,25)]     w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg   '>
-              <button className=' text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
-              <input type='text' className=' w-[85%] text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' />
-              <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+      
+        <div className=' w-full relative  flex flex-row m-4 rounded-xl borer overflow-hidden'>
+          <div className='AI-CHAT bordr bg-[rgb(37,38,40)]  border-green-500 w-[75%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
+            {load && <div className=' absolute flex top-[50%] '>
+              <Loader />
+            </div>}
+            <div className=' text-center font-bold shadow-sm p-2 w-full  grid-cols-4 max-[768px]:grid grid-flow-row-dense   '>
+              <button className=' md:hidden text-white text-xl ' onClick={menu}><FiMenu /></button>
+              <p className='col-span-2 text-neutral-400'>
+                <div className='SWITCH_BTN   '>
+                  <div className=' flex justify-center gap-2 text-xl items-center'> chats <div className=' bg-opacity-1 bg-neutral-400 border-[#3FDD79] w-10 h-6 rounded-xl items-center flex px-[1px] transition ease-in-out delay-150 duration-150' >
+                     <div className=' border-2 rounded-xl w-4 h-4 cursor-pointer   transition ease-in-out delay-150 duration-150 bg-white' onClick={Switch}>
+                      </div> </div> Avaz</div>
+                
+                </div>
+              </p>
             </div>
-          </div>
+            <div className='CHATS relative  w-full h-full bordr-8 flex flex-col pb-[10%]   scroll-auto overflow-auto space-y-8 p-4 ' id='chats'>
 
-          {/* extra design below */}
-          {/* <div className='INPUT-BAR border-2 absolute bottom-[5%]   w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>
+              {load && <Loader />}
+
+
+            </div>
+            <div className='INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  '>
+              <div className='INPUT-BAR max-h-24 bordr-2 bg-[rgb(22,23,25)] w-[80%] flex flex-row justify-between  items-end   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg   '>
+                <button className=' text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
+                {/* <input type='text' className=' w-[85%] h-60 text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' /> */}
+                <textarea className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
+                </textarea>
+                <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+              </div>
+            </div>
+
+
+
+            {/* extra design below
+            <div className='INPUT-BAR border-2 absolute bottom-[5%]   w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>
             <button className=' text-xl  bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
             <input type='text' className=' w-[85%] text-xl outline-none ' onChange={inputQuery} value={input} placeholder='Ask Query' />
             <button className=' text-xl bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' disabled={input.length == 0} onClick={send} ><IoSend /></button>
           </div> */}
 
-        </div>
-        <div className='HISTORY bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[25%] h-full p-6 border-l border-neutral-700 max-[768px]:hidden'>
-          <div className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
-            <p>New Chat</p>
-            <button><IoSearch /></button>
           </div>
-          <br/>
-          
-        </div>
+          <div className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[25%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist?' translate-x-0':'translate-x-full '}`}>
+          <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft/></button>
+            <div className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
+              <p>New Chat</p>
+              <button><IoSearch /></button>
+            </div>
+            <br />
+          </div>
+
+
 
         </div>
       </div>}

@@ -1,5 +1,5 @@
 import React from 'react'
-import load from "./Ripple-1s-200px.gif"
+import load from "./Ellipsis-1s-200pxTransparent.gif"
 export default function 
 () {
   return (

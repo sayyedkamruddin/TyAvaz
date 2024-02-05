@@ -84,6 +84,8 @@ export default function() {
                     <ul className=' flex gap-4 flex-col  text-center '>
                             <li><Link to='/' className='  hover:underline' onClick={()=>{setopen(!open)}}>Home</Link></li>
                             <li><Link to='/about' className=' hover:underline' onClick={()=>{setopen(!open)}}>About</Link></li>
+                            <li><Link to='/ai' className=' hover:underline' onClick={()=>{setopen(!open)}}>Ai</Link></li>
+
                             <li><Link to='/document' className=' hover:underline'onClick={()=>{setopen(!open)}}>Document</Link></li>
                             <li><Link to='/contact' className=' hover:underline'onClick={()=>{setopen(!open)}}>Contact</Link></li>
                         </ul>
