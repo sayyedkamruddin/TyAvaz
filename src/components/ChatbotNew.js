@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
@@ -15,6 +16,12 @@ import { IoSearch } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import Loader from './Loader';
 import micGif from './googleVoice.gif'
+import { MdContentCopy } from "react-icons/md";
+import { HiOutlineSpeakerWave } from "react-icons/hi2";
+import { TbReload } from "react-icons/tb";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
+import { MdOutlineEdit } from "react-icons/md";
 export default function ChatbotNew() {
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
@@ -95,6 +102,25 @@ export default function ChatbotNew() {
   //.................Speech API's Codes SECTION End.....................................
 
 
+
+
+  //...............copy logic............
+
+
+  const copy=(ele)=>{
+    let C_text=ele.firstElementChild.innerText
+    navigator.clipboard.writeText(C_text)
+    alert("copied")
+  }
+
+  //......regenarte logic........
+
+  const regenrate= async(eleU,eleA)=>{
+console.log(eleU.innerText+ "      "+eleA.firstElementChild.innerText);
+let ans =await fetchPost(eleU.innerText)
+eleA.firstElementChild.innerText=ans
+  }
+
   //.................Backend API's Codes SECTION Start.....................................
 
   //send function
@@ -102,45 +128,84 @@ export default function ChatbotNew() {
     // e.preventDefault()
     let CHATS_DivUser = document.getElementById("chats");
 
-    let eleU = document.createElement("div")
-    eleU.className += "USER float-right  self-end m-4 w-[40%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    let eleU = document.createElement('div')
+    eleU.setAttribute('disabled','true')
+    let eleU_A=document.createElement('button')
+    let edit=<MdOutlineEdit title='edit' className=' ' />
+    ReactDOM.render(edit,eleU_A)
+    eleU.className += "USER outline-none float-right relative group  self-end m-4 w-[40%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU_A.className+=" text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
     eleU.innerText = input
+    eleU.appendChild(eleU_A)
     CHATS_DivUser.appendChild(eleU)
-    // u = input
 
 
+    u = input
 
 
-    u = `There are several different types of PCs, each with their own specific purpose and configuration:
+    let u1 = `There are several different types of PCs, each with their own specific purpose and configuration:
     1. Desktop PCs: These are the traditional computers that are typically placed on a desk or table. They consist of a computer case that houses the motherboard, CPU, memory, storage, and other components. Desktop PCs are typically larger in size and offer more customization options, allowing users to upgrade or replace components as needed.
     2. Laptop PCs: Also known as notebooks, these are portable computers that are designed for use on the go. They are lightweight and compact, with all the necessary components integrated into a single unit. Laptops typically have a built-in keyboard, a touchpad, and a display screen. They are powered by batteries and can be easily transported.
     3. All-in-One PCs: These are computers where the monitor and the central processing unit (CPU) are integrated into a single unit. The all-in-one PC eliminates the need for a separate computer tower and allows for a more compact and streamlined design. They are often used in homes or offices where space is limited.
     4. Gaming PCs: These are high-performance computers specifically designed for gaming purposes. They are equipped with powerful processors, dedicated graphics cards, and ample memory and storage capacity. Gaming PCs are built to handle demanding games and provide a smooth gaming experience with high-quality graphics.
-    5. Workstations: These are powerful computers tailored for professional purposes like graphic design, video editing, 3D modeling, and scientific calculations. Workstations are equipped with high-performance processors, large amounts of RAM, and dedicated graphics cards to handle resource-intensive tasks efficiently.
-    6. Mini PCs: These are small form-factor computers that are compact and space-saving. Mini PCs are typically used for basic tasks like web browsing, media streaming, and office work. They are less powerful compared to desktop or gaming PCs but offer the advantage of portability and low power consumption.
-    7. Server PCs: These are specialized computers designed to host websites, applications, or files that can be accessed by multiple users over a network. Server PCs are typically more powerful and have additional storage capacity to handle the demands of serving data to multiple clients.
-    8. Thin Clients: These are lightweight computers that rely on a network connection to access specific programs and data stored on a remote server. Thin clients are often used in workplaces where users need access to centralized computing resources and do not require powerful individual computers.
     These are just a few examples of the many types of PCs available in the market. The choice of PC depends on the specific requirements and intended usage of the user or organization.`
 
     setInput("")
     let eleA = document.createElement("div")
-    eleA.className += "AVAZ hover:text-red-500  float-left bg-white self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    let eleA_1=document.createElement('span')
+    let eleA_2=document.createElement('div')
+    let sub_div=document.createElement('div')
+    let a=<HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   "/>
+    let b=< >
+    <div className=' text-white flex items-cente justify-center h-auto text-center ' title=''>
+    <span className='opacity-50 hover:opacity-100 cursor-pointer'>
+    <IoIosArrowBack disabled/>
+    </span>
+    <h1 className='opacity-50'>0</h1>
+    <span className='opacity-50 hover:opacity-100 cursor-pointer'>
+      <IoIosArrowForward/>
+    </span>
+
+    </div>
+    <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 ' title='copy' onClick={()=>{copy(eleA)}}><MdContentCopy /></div>
+    <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100' title='reload' onClick={()=>{regenrate(eleU,eleA)}}><TbReload/></div>
+    </>
+    eleA.className += "AVAZ relative leading-5 z-0 group float-left bg-white self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    // eleA_2.classList.add("absolute","right-2","bottom-2")
+    eleA_2.classList.add("float-end","leading-snug")
+    // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
+    sub_div.className+="hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4  "
+    
+    ReactDOM.render(a,eleA_2)
+    ReactDOM.render(b,sub_div)
+    
+    
     // let a = `AVAZ AI.......${input}`
     // eleA.innerText += await fetchPost(u)
-    // let ans = await fetchPost(u)
-    let ans = u
+    let ans = await fetchPost(u)
+    // let ans = u
     for (let i = 0; i < ans.length; i++) {
       const element = ans[i];
-      window.scrollTo(0, CHATS_DivUser.scrollHeight)
-
+      // window.scrollTo(0, CHATS_DivUser.scrollHeight)
       setTimeout(() => {
-        eleA.innerText += element
-      }, i * 2);
+        eleA_1.innerText += element
+      }, i * 20);
+      if (i==ans.length-1) {
+        console.log("done");
+      }
     }
+    
+    eleA.appendChild(eleA_1)
+    eleA.appendChild(eleA_2)
+    eleA.appendChild(sub_div)
     CHATS_DivUser.appendChild(eleA)
+
+
   };
 
 
+
+  
 
 
 
@@ -195,6 +260,8 @@ export default function ChatbotNew() {
     } catch (error) {
       setLoad(false)
       console.log(error)
+      alert("server Error")
+      return false
     }
   }
 
@@ -270,6 +337,7 @@ const history=()=>{
             </div>
           </div>}
           
+         
         <div className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
              max-[768px]:${open?'translate-x-[0px]':'-translate-x-[200px]'}`}>                
                 <button className=' absolute right-0 p-2 text-white md:hidden ' onClick={menu}><IoClose/></button>
@@ -291,13 +359,13 @@ const history=()=>{
             </ul>
           </div>
 
-          <div className='PROFILE absolute bottom-4 bordr p-4 rounded-xl bg-[rgb(37,38,40)]'>
+          <div className='PROFILE absolute bottom-4  bordr p-2 w-5/6 rounded-xl bg-[rgb(37,38,40)]'>
             <Link to='/'>
-              <div className=' flex items-center gap-2 '>
-                <LuUserCircle2 className=' w-12 h-full bg-white rounded-full' />
-                <div className=' text-sm text-white'>
+              <div className=' flex items-center gap-2  '>
+                <LuUserCircle2 className=' w-5/6 h-full bg-white rounded-full' />
+                <div className=' text-base  text-white'>
                   <p>NAME-XYZ</p>
-                  <p className=' text-neutral-500'>XYZ@gmail.com</p>
+                  <p className=' text-neutral-500 text-xs'>XYZ@gmail.com</p>
                 </div>
               </div>
             </Link>
@@ -323,8 +391,11 @@ const history=()=>{
             </div>
             <div className='CHATS relative  w-full h-full bordr-8 flex flex-col pb-[10%]   scroll-auto overflow-auto space-y-8 p-4 ' id='chats'>
 
-              {load && <Loader />}
-
+            {/* <div className="USER relative flex float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ">
+            <button className=' float-end absolute end-0 bottom-0'>
+              okk
+            </button>
+            </div> */}
 
             </div>
             <div className='INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  '>
