@@ -9,6 +9,7 @@ import Document from './components/Document';
 import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
 import ChatbotNew from './components/ChatbotNew';
+import Register from './components/practicebackend/Register';
 function App() {
   
   return (
@@ -23,7 +24,7 @@ function App() {
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
           <Route path='/ai' element={<ChatbotNew />}/>
-
+          <Route path='/Register' element={<Register/>}/>
 
           
 

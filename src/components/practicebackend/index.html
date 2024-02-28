@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum, porro esse! Quidem perferendis
+        dicta provident, deleniti voluptatibus ab exercitationem totam consequatur tempora hic vero, quas iure saepe
+        perspiciatis at assumenda? Incidunt dolorem alias quaerat ducimus rerum cumque quas animi voluptates obcaecati,
+        laborum a at consectetur error eius consequatur sequi vero praesentium temporibus autem architecto. Atque
+        recusandae placeat minima quidem incidunt laudantium labore neque odit commodi omnis obcaecati maiores ab ipsa
+        nam nostrum voluptate consectetur, exercitationem a quam, earum impedit vel tempore mollitia. Laboriosam animi
+        ut, beatae molestias sequi impedit, blanditiis, non molestiae magni repellendus nulla voluptatem doloribus
+        necessitatibus? Repudiandae, ut.</div>
+
+<button onclick="SPeak()">SPeak</button>
+<button onclick="stop()">stop</button>
+
+
+    <script>
+
+        let b = document.getElementById("text")
+        console.log(b.innerHTML);
+        let speech=new SpeechSynthesisUtterance()
+        let SPeak=()=>{
+
+
+            speech.text=b.innerText
+            window.speechSynthesis.speak(speech)
+        }
+
+        const stop=()=>{
+            window.speechSynthesis.pause()
+        }
+    </script>
+</body>
+
+</html>
