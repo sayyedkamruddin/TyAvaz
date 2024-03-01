@@ -311,10 +311,6 @@ export default function ChatbotNew() {
       e.target.style.height = 'auto'
     }
 
-
-
-
-
   }
 
 
