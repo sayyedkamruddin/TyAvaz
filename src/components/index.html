@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="width: 100%; height: 100%;">
 
 <head>
     <meta charset="UTF-8">
@@ -9,111 +9,9 @@
 
 <body>
 
-    <!-- <div class="">
-        <textarea rows=" 10" id="txt">...</textarea>
-        <button onclick="play()">start</button>
-        <button onclick="pause()">stop</button>
-
-    </div> -->
-    <audio id="audio" controls></audio>
-<canvas id="audioSpectrum"></canvas>
-<button id="startRecording">Start Recording</button>
-<button id="stopRecording" disabled>Stop Recording</button>
-
-<script>
-//     let sr=window.webkitSpeechRecognition || window.SpeechRecognition
-//     let spRec=new sr()
-//     spRec.continuous=true
-//     spRec.interimResults=true
-//     spRec.onresult=(e)=>{
-//         let d=document.getElementById("txt")
-//         let reorded1,l
-//         // let reorded=Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}).join("")
-
-//         reorded1=Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}).join("")
-//         console.log(reorded1)
-       
-        
-//         // console.log(Array.from(e.results).map((r)=> { return r[0]}).map((t)=>{ return t.transcript}))
-//         // d.innerHTML=reorded
-//     }
-//    const interval= setInterval(() => {
-//         let i=0
-//         // console.log(i);
-//     }, 1000);
-//     setTimeout(() => {
-        
-//         clearInterval(interval)
-//     }, 5000);
-//     const play=()=>{
-//         spRec.start()
-//     }
-//     const pause=()=>{
-//         spRec.stop()
-//     }
-//     console.log(spRec);
-
-// Access necessary elements
-const audioElement = document.getElementById('audio');
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioContext.createAnalyser();
-const canvas = document.getElementById('audioSpectrum');
-const ctx = canvas.getContext('2d');
-const startRecordingButton = document.getElementById('startRecording');
-const stopRecordingButton = document.getElementById('stopRecording');
-
-// Set up audio processing
-navigator.mediaDevices.getUserMedia({ audio: true })
-  .then((stream) => {
-    const source = audioContext.createMediaStreamSource(stream);
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
-  })
-  .catch((error) => console.error('Error accessing microphone:', error));
-
-// Set up canvas for spectrum visualization
-analyser.fftSize = 256;
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
-// Draw audio spectrum
-function draw() {
-  analyser.getByteFrequencyData(dataArray);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const barWidth = (canvas.width / bufferLength) * 2.5;
-  let barHeight;
-  let x = 0;
-
-  for (let i = 0; i < bufferLength; i++) {
-    barHeight = dataArray[i];
-
-    ctx.fillStyle = rgb(50, barHeight+1, 50);
-    ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-
-    x += barWidth + 1;
-  }
-
-  requestAnimationFrame(draw);
-}
-
-// Event listeners for recording buttons
-startRecordingButton.addEventListener('click', () => {
-  audioContext.resume().then(() => {
-    startRecordingButton.disabled = true;
-    stopRecordingButton.disabled = false;
-
-    // Start drawing audio spectrum
-    draw();
-  });
-});
-
-stopRecordingButton.addEventListener('click', () => {
-  startRecordingButton.disabled = false;
-  stopRecordingButton.disabled = true;
-});
-</script>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia fugiat exercitationem quis ab ullam, obcaecati
+    provident quae beatae illo quasi consequatur similique! Veniam beatae quaerat aliquid impedit perspiciatis a
+    assumenda.
 </body>
 
 </html>

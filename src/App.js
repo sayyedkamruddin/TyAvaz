@@ -6,15 +6,22 @@ import Home from './components/Home';
 import Contact from './components/Contact';
 import About from './components/About';
 import Document from './components/Document';
-import Chatbot from './components/Chatbot';
-import Footer from './components/Footer';
 import ChatbotNew from './components/ChatbotNew';
-import Register from './components/practicebackend/Register';
+import Footer from './components/Footer';
+import SignLog from './components/SignLog';
+import Profile from './components/Profile';
+import Auth from './components/Auth';
+import NoteState from './context/NodeState'
+import Avaz from './components/Avaz';
+
+
+
+
 function App() {
   
   return (
     <div >
-
+      <NoteState>
       <Router>
         
       <Navbar/>
@@ -23,14 +30,22 @@ function App() {
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
-          <Route path='/ai' element={<ChatbotNew />}/>
-          <Route path='/Register' element={<Register/>}/>
+          <Route path='/ai' element={<Auth Component={ChatbotNew}/>}/>
+          <Route path='/sign' element={<SignLog/>}/>
+          <Route path='/profile' element={<Auth Component={Profile}/>}/>
+          <Route path='/AVAZ' element={<Avaz/>}/>
+
+
+
+          
+
 
           
 
         </Routes>
         <Footer/>
       </Router>
+      </NoteState>
     </div>
   );
 }

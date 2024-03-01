@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
+import Pop1l from './Pop1l'
+import { useContext } from 'react'
+import noteContext from "../context/noteContext";
+
+
 import { Link, useLocation } from 'react-router-dom'
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 export default function() {
     // const windowSize = useRef([window.innerWidth, window.innerHeight]);
-
+    const access=useContext(noteContext)
+ 
     const location=useLocation().pathname;
     const [bgcolor, setbgcolor] = useState("red")
     const [fgcolor, setfgcolor] = useState("white")
     const [path,setPath]=useState(true)
+    const [pop,setPop]= useState(false);
     console.log(location==="/ai")
     const hovered = () => {
         setbgcolor(() => {
@@ -33,13 +40,14 @@ export default function() {
     }
     return (
         <>
+            <Pop1l poplog={pop} onChange={(value)=>setPop(value)}/>
         {
-            location!="/ai" &&
+            (location!="/ai" && location!="/new" && location!="/new1" && location!="/AVAZ")  &&
 
                     
                 //navbar  for device greater than 768px 
-            <div className=''>
-                <div className='NAVBAR flex justify-between  px-10 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
+            <div className='relative z-50'>
+                <div className='NAVBAR flex justify-between  pl-10 pr-5 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
                     <div className='LOGO text-3xl font-bold  '>
                         <Link to='/'>AvAz</Link>
                     </div>
@@ -53,14 +61,25 @@ export default function() {
                             <li><Link to='/contact' className={`${location==="/contact"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Contact</Link></li>
 
                         </ul>
-                    </div>
+                    </div>{ !access.state.Token &&
                     <div className='BTNS max-[768px]:hidden  '>
                         <ul className=' flex gap-4'>
-                            <li className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}><Link to='/login'>Log In</Link></li>
-                            <li className={` w-32 h-10 leading-8 bg-${bgcolor}-500  text-center border-2 rounded-full text-${fgcolor} transition  delay-100 duration-200 ease-in`} onMouseOver={hovered} onMouseOut={unhovered} ><Link to='/Register'>Get Started</Link></li>
+                            {/* <li  className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}><Link to='/login'>Log In</Link></li> */}
+                            <button onClick={()=>{pop===true? setPop(false): setPop(true)}} className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}>Log In</button>
+
+                            <li className={` w-32 h-10 leading-8 bg-${bgcolor}-500  text-center border-2 rounded-full text-${fgcolor} transition  delay-100 duration-200 ease-in`} onMouseOver={hovered} onMouseOut={unhovered} ><Link to='/sign'>Get Started</Link></li>
                         </ul>
                     </div>
-               
+
+                            }
+                            { access.state.Token &&
+                   <div  className='profile right-2 flex justify-end items-center w-56 h-full'>
+                        <div className='fname  items-center  text-2xl bold font-serif  h-8 w-40 text-black flex justify-end mr-2'><span className='h-8 ' >{access.state.Fname}</span> </div>
+                       <Link to='/profile'>
+                        <div className='img w-12 h-12 items-center my-auto border-2 border-black rounded-full'><img className='w-full h-full rounded-full ' src='http://192.168.1.208:3000/dp.png'></img>
+                        </div></Link>
+                    </div>
+                        }
                     {open &&
                         < > 
                             {/* responsive close button */}
@@ -84,11 +103,10 @@ export default function() {
                     <ul className=' flex gap-4 flex-col  text-center '>
                             <li><Link to='/' className='  hover:underline' onClick={()=>{setopen(!open)}}>Home</Link></li>
                             <li><Link to='/about' className=' hover:underline' onClick={()=>{setopen(!open)}}>About</Link></li>
-                            <li><Link to='/ai' className=' hover:underline' onClick={()=>{setopen(!open)}}>Ai</Link></li>
-
                             <li><Link to='/document' className=' hover:underline'onClick={()=>{setopen(!open)}}>Document</Link></li>
-                            <li><Link to='/contact' className=' hover:underline'onClick={()=>{setopen(!open)}}>Contact</Link></li>
+                            <li><Link to='/contact'  className=' hover:underline'onClick={()=>{setopen(!open)}}>Contact</Link></li>
                         </ul>
+
                     </div>
                     }
 

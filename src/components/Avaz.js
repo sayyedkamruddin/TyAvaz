@@ -15,8 +15,8 @@ import micGif from './googleVoice.gif'
 import { MdContentCopy,MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
-
-
+import { RiImageEditLine } from "react-icons/ri";
+import { IoImageOutline } from "react-icons/io5";
 export default function Avaz() {
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
@@ -168,7 +168,7 @@ export default function Avaz() {
     setInput("")
     let eleA = document.createElement("div")
     let eleA_1 = document.createElement('span')
- let eleA_2 = document.createElement('div')
+    let eleA_2 = document.createElement('div')
     let sub_div = document.createElement('div')
     let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   " onClick={() => { textTospeexh(eleA) }} />
     let b = < >
@@ -185,7 +185,7 @@ export default function Avaz() {
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
     </>
-    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
   
@@ -287,7 +287,7 @@ export default function Avaz() {
       setLoad(false)
       console.log(error)
       alert("server Error")
-      return "Please Try Agin later"
+      return "server Error"
     }
   }
 
@@ -334,23 +334,7 @@ useEffect(()=>{
   end.current.scrollIntoView()
 },)
 
-const switchRefT1=useRef(null)
-const switchRefF1=useRef(null)
-useEffect(()=>{
-  if (Switch1) {
-    
-    
-    switchRefF1.current.classList.add('bg-white','text-black')
-    switchRefT1.current.classList.remove('bg-white','text-black')
-    
-  } else {
-    switchRefT1.current.classList.add('bg-white','text-black')
-    switchRefF1.current.classList.remove('bg-white','text-black')
 
-  }
-
-})
-const [Switch1,setSwitch1]=useState(true);
 
   return (
     <>
@@ -384,7 +368,7 @@ const [Switch1,setSwitch1]=useState(true);
           <div className='SIDE_MENU w-6/6 m-auto text-neutral-500 '>
             <ul className=' w-full p-2 text-2xl font-semibld space-y-4 text-whit   max-lg:text-sm '>
               <li><Link to='/' className={` hover:text-white flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
-              <li><Link to='/ai' className={`  text-${loc === "/ai" ? "white" : "black"} hover:text-${loc === "/ai" ? "white" : ""} flex text-center items-center gap-2 `}><BsRobot /> Ai</Link></li>
+              <li><Link to='/ai' className={`  text-${loc === "/AVAZ" ? "white" : "black"} hover:text-${loc === "/AVAZ" ? "white" : ""} flex text-center items-center gap-2 `}><BsRobot /> Ai</Link></li>
               <li><Link to='/about' className={` hover:text-white flex text-center items-center gap-2 `}><FcAbout /> About</Link></li>
               <li><Link to='/document' className={` hover:text-white flex text-center items-center gap-2 `}><TiDocumentText /> Document </Link></li>
               <li><Link to='/contact' className={` hover:text-white  flex text-center items-center gap-2 `}> <TiContacts /> Contact</Link></li>
@@ -416,9 +400,9 @@ const [Switch1,setSwitch1]=useState(true);
               <div className='SWITCH_BTN   '>
                 <div className=' flex justify-center gap-2 text-lg items-center  '>
                   <div className='border border-white flex rounded-md overflow-hidden  '>
-                        <p className=' p-1 px-4 cursor-pointer ' ref={switchRefF1}  onClick={()=>{setSwitch1(()=>{return true})}} ><Link to={'/ai'}>CHAT</Link> </p>
+                  <Link to={'/ai'}><p className=' p-1 px-4 cursor-pointer '    >CHAT </p></Link>
                         <p className=' border h-auto border-white'></p>
-                        <p className='p-1 px-4 cursor-pointer' ref={switchRefT1} onClick={()=>{setSwitch1(()=>{return false})}} ><Link to={'/AVAZ'}>AVAZ</Link></p>
+                        <Link to={'/AVAZ'}>   <p className='p-1 px-4 cursor-pointer bg-white text-black' >AVAZ</p></Link>
                   </div>
                    </div>
                 </div>
@@ -459,9 +443,21 @@ const [Switch1,setSwitch1]=useState(true);
           </div>
           <div className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
             <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
-            <div className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
-              <p>New Chat</p>
-              <button><IoSearch /></button>
+            <div className='DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  '>
+                <h1 className=' text-white text-xl'>ALL MODELS</h1>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2'> <RiImageEditLine/>Text to Image</button>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2 '><IoImageOutline/>Image to Image</button>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
+            
+            {/* img btn remainig */}
+            
+            {/* <div className=' '>
+                <form >
+                    <label for='img' ><div className='w-28 h-28 border'> <img src='/imgbtn.jpg' /></div></label>
+                    <input type='file' id='img' className=' hidden'/>
+                </form>
+            </div> */}
             </div>
             <br />
           </div>
