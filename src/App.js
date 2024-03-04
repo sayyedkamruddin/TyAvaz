@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import Auth from './components/Auth';
 import NoteState from './context/NodeState'
 import Avaz from './components/Avaz';
+import Forget from './components/Forget';
 
 
 
@@ -20,7 +21,7 @@ import Avaz from './components/Avaz';
 function App() {
   
   return (
-    <div >
+    <div  className=' overflow-hidden'>
       <NoteState>
       <Router>
         
@@ -34,6 +35,8 @@ function App() {
           <Route path='/sign' element={<SignLog/>}/>
           <Route path='/profile' element={<Auth Component={Profile}/>}/>
           <Route path='/AVAZ' element={<Avaz/>}/>
+          <Route path='/forgot' element={<Forget/>}/>
+          
 
 
 

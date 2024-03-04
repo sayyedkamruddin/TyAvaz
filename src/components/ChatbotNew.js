@@ -95,7 +95,7 @@ export default function Avaz() {
     let speech = new SpeechSynthesisUtterance();
     speech.text = eleA.innerText
 
-    speech.voice = window.speechSynthesis.getVoices()[15]
+    // speech.voice = window.speechSynthesis.getVoices()
 
     window.speechSynthesis.speak(speech);
 
@@ -108,7 +108,7 @@ export default function Avaz() {
 
 
 
-
+  
 
   //...............copy logic............
 
@@ -134,6 +134,9 @@ export default function Avaz() {
     }
   }
 
+ 
+
+  
   //.................Backend API's Codes SECTION Start.....................................
 
   //send function
@@ -142,6 +145,14 @@ export default function Avaz() {
     let CHATS_DivUser = document.getElementById("chats");
 
     let eleU = document.createElement('div')
+    let editModal=<div className=' w-[50%] h-[50%] border bg-white'>
+      <textarea>edit</textarea>
+      <button>Save</button>
+      <button>Cancel</button>
+    </div>
+
+
+
     eleU.setAttribute('disabled', 'true')
     let eleU_A = document.createElement('button')
     let edit = <MdOutlineEdit title='edit' className=' ' />
@@ -154,7 +165,10 @@ export default function Avaz() {
     // CHATS_DivUser.appendChild(eleU)
     CHATS_DivUser.insertBefore(eleU,CHATS_DivUser.lastChild)
 
-
+    let eleU_1=document.createElement('div')
+    eleU_1.className+=' absolute top-[100%] right-[20%]'
+    eleU_1.innerText="sdkfjjvkdfhvkrhvbkrhbv"
+    // eleU.appendChild(eleU_1)
     u = input
 
 
@@ -170,7 +184,7 @@ export default function Avaz() {
     let eleA_1 = document.createElement('span')
  let eleA_2 = document.createElement('div')
     let sub_div = document.createElement('div')
-    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   " onClick={() => { textTospeexh(eleA) }} />
+    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer mx-2   " onClick={() => { textTospeexh(eleA) }} />
     let b = < >
       <div className=' text-white flex items-cente justify-center h-auto text-center my-2   ' title=''>
         <span className='opacity-50 hover:opacity-100 cursor-pointer'>
@@ -185,7 +199,7 @@ export default function Avaz() {
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
     </>
-    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left items-center gap-2 h-auto bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
   
@@ -195,6 +209,10 @@ export default function Avaz() {
 
     ReactDOM.render(a, eleA_2)
     ReactDOM.render(b, sub_div)
+
+    let chat_Div_U=document.createElement('div')
+    chat_Div_U.innerText=u
+    ChatHist.current.appendChild(chat_Div_U)
 
 
     // let a = `AVAZ AI.......${input}`
@@ -208,7 +226,7 @@ export default function Avaz() {
       // end.current.scrollIntoView()
 
       setTimeout(() => {
-        end.current.scrollIntoView()
+        // end.current.scrollIntoView()
         eleA_1.innerText += element
         
       }, i * 20);
@@ -220,10 +238,16 @@ export default function Avaz() {
 
     eleA.appendChild(eleA_1)
     eleA.appendChild(eleA_2)
+    
     eleA.appendChild(sub_div)
-
-// hh    // CHATS_DivUser.appendChild(eleA)
+//  CHATS_DivUser.appendChild(eleA)
     CHATS_DivUser.insertBefore(eleA,CHATS_DivUser.lastChild)
+
+
+    
+    // let chat_Div_A=document.createElement('div')
+    chat_Div_U.innerText+=ans
+    // ChatHist.current.appendChild(chat_Div_A)
 
 
 
@@ -243,6 +267,7 @@ export default function Avaz() {
     eleU.className += "USER float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
     eleU.innerHTML = e
     CHATS_DivUser.appendChild(eleU)
+    
     u = e
 
     setInput("")
@@ -330,6 +355,7 @@ export default function Avaz() {
 
 
 const end=useRef(null)
+const ChatHist=useRef(null)
 useEffect(()=>{
   end.current.scrollIntoView()
 },)
@@ -351,6 +377,14 @@ useEffect(()=>{
 
 })
 const [Switch1,setSwitch1]=useState(true);
+const chatChange=useRef(null)
+
+
+var parentElement1 = document.querySelector('.CHATS');
+const Newchat=()=>{
+//   var childElement1 = parentElement1.querySelectorAll('.USER');
+console.log(chatChange.current.childNodes);
+}
 
   return (
     <>
@@ -424,14 +458,19 @@ const [Switch1,setSwitch1]=useState(true);
                 </div>
               </p>
             </div>
-            <div className='CHATS relative scroll-auto   w-full h-full bordr-8 flex flex-col px-[10%] pb-[4%]    overflow-auto space-y-8 p-4 ' id='chats'>
+            <div ref={chatChange} className='CHATS relative scroll-auto justify-centr items-centr  w-full h-full bordr-8 flex flex-col px-[10%] pb-[4%]    overflow-auto space-y-8 p-4 ' id='chats'>
+              
+             
               {/* <button onClick={()=>{end.current.scrollIntoView()}}>okkk</button> */}
               {/* <div className="USER relative flex float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ">
             <button className=' float-end absolute end-0 bottom-0'>
               okk
             </button>
             </div> */}
-           
+            {/* <div>jkjjkjjkjjkj</div>
+            <textarea className='USER outline-none float-right relative group text-xl  self-end m-4 px-4 w-[50%] max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl resize-none ' disabled rows={1}>hi every one</textarea> */}
+
+              
 
             <div ref={end}></div>
 
@@ -444,6 +483,8 @@ const [Switch1,setSwitch1]=useState(true);
                 <textarea className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
                 </textarea>
                 <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+              
+              
               </div>
             </div>
 
@@ -457,13 +498,16 @@ const [Switch1,setSwitch1]=useState(true);
           </div> */}
 
           </div>
-          <div className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
+          <div ref={ChatHist} className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
             <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
-            <div className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
+            <div onClick={Newchat} className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
               <p>New Chat</p>
-              <button><IoSearch /></button>
+            
             </div>
             <br />
+            <div ref={ChatHist} className='CHAT-History'>
+HISTORY
+            </div>
           </div>
 
 

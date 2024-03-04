@@ -3,7 +3,7 @@ import NoteContext from "./noteContext";
 const NoteState=(props)=>{
     
     const [state,setState]= useState({
-        "Token":true,  //for login page
+        "Token":false,  //for login page
         "Fname":"",
         "Lname":"",
         "Email":"",
