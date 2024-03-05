@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import Cookie from 'js-cookie'
 
 export default function Forget() {
 
@@ -156,14 +157,12 @@ export default function Forget() {
             }
 
 
-        } else {
-            // alert('note same')
-            setmodal(
-            {
-                message:'Password Not Same',
-                display:true
+        } else if (user.password != user.Cpassword) {
+            setmodal(()=>{
+                return {message:'password not match'}
             })
             modalFun()
+            // alert(modal.message)
 
         }
 
@@ -184,17 +183,29 @@ export default function Forget() {
     const [chckbox, setChckbox] = useState("password");
     const navigate=useNavigate()
     const [modal,setmodal]=useState({
-        message:" ..",
+        message:"",
         display:false
     })
    
+    const cookie=()=>{
+        alert("cookie")
+        document.cookie="c1" +"cValue"
+        Cookie.set('helo','hvalue',{
+            expires:30,
+            secure:true,
+            sameSite:'Strict',
+            path:'/'
+        })
+    }
+    const get=Cookie.get('helo')
+    console.log(get);
     return (
         <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex overflow-hidden  z-auto ">
             <div className="img w-7/12 h-full max-[768px]:hidden">
                 <img src="http://localhost:3000/6.png" className=" w-full h-full"></img>
             </div>
             <div className="img w-5/12  bg-[#000] overflow-hidden relative max-[768px]:w-full h-full max-[768px]:overflow-hidden shadow-inner flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
-            <h1 className={` text-white bg-blck absolute ${modal.display?'top-0 p4':'-top-20 hidden'} top-10 p4 transition-all delay-300 duration-300  text-lg bg-red-600  w-full `} >{modal.message} </h1>
+            {/* <h1 className={` text-white bg-blck absolute ${modal.display?'top-0 p4':'-top-20 hidden'} top-10 p4 transition-all delay-300 duration-300  text-lg bg-red-600  w-full `} >{modal.message} </h1> */}
 
 
                 {!Reset &&
@@ -205,7 +216,8 @@ export default function Forget() {
                             <form className='w-10/12 h-96  flex-col' onSubmit={submit}>
                                 <div className="w-full p-2 h-auto">
                                     <h1 className="w-full text-center p-2 h-auto font-bold text-white text-3xl "> Forgot Password</h1>
-
+                <div className="w-full h-7 text-center text-lg text-red-600" >{modal.message}</div>
+                                <button onClick={cookie}>set cookie</button>
                                 </div>
                                 {/* <div className="w-full h-7 text-center text-lg text-red-600" >{titleslog}</div> */}
                                 <br />
@@ -295,6 +307,7 @@ export default function Forget() {
                             <form className='w-10/12 h-96  flex-col' onSubmit={Resetpass}>
                                 <div className="w-full p-2 h-auto">
                                     <h1 className="w-full text-center p-2 h-auto font-bold text-white text-3xl "> Reset Password</h1>
+                                    <div className="w-full h-7 text-center text-lg text-red-600" >{modal.message}</div>
 
                                 </div>
                                 {/* <div className="w-full h-7 text-center text-lg text-red-600" >{titleslog}</div> */}
