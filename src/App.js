@@ -14,17 +14,18 @@ import Auth from './components/Auth';
 import NoteState from './context/NodeState'
 import Avaz from './components/Avaz';
 import Forget from './components/Forget';
+import { useContext, useState } from 'react';
 
 
 
 
 function App() {
-  
+
+    
   return (
     <div  className=' overflow-hidden'>
       <NoteState>
       <Router>
-        
       <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
@@ -36,7 +37,6 @@ function App() {
           <Route path='/profile' element={<Auth Component={Profile}/>}/>
           <Route path='/AVAZ' element={<Avaz/>}/>
           <Route path='/forgot' element={<Forget/>}/>
-          
 
 
 

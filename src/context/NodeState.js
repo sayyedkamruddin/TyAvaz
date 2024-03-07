@@ -22,9 +22,20 @@ const NoteState=(props)=>{
           })  
         
     }
-
+    const logout=()=>{
+        // const {Fname, Lname, Email, Phone, City }=data;
+          setState({
+            "Token":false,  //for login page
+        "Fname":"",
+        "Lname":"",
+        "Email":"",
+        "Phone":"",
+        "City":""
+          })  
+        
+    }
     return(
-        <NoteContext.Provider value={{state,update}}>
+        <NoteContext.Provider value={{state,update,logout}}>
             {props.children}
         </NoteContext.Provider>
     )

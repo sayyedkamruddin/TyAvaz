@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Cookie from 'js-cookie'
+import noteContext from "../context/noteContext";
 
 export default function Forget() {
 
@@ -186,19 +187,17 @@ export default function Forget() {
         message:"",
         display:false
     })
+
+
+    const context=useContext(noteContext)
+    
+    // const homePage=()=>{
+
+    // }
+    const access=useContext(noteContext)
+
+    console.log(access.state.Fname+"  ......." );
    
-    const cookie=()=>{
-        alert("cookie")
-        document.cookie="c1" +"cValue"
-        Cookie.set('helo','hvalue',{
-            expires:30,
-            secure:true,
-            sameSite:'Strict',
-            path:'/'
-        })
-    }
-    const get=Cookie.get('helo')
-    console.log(get);
     return (
         <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex overflow-hidden  z-auto ">
             <div className="img w-7/12 h-full max-[768px]:hidden">
@@ -217,7 +216,6 @@ export default function Forget() {
                                 <div className="w-full p-2 h-auto">
                                     <h1 className="w-full text-center p-2 h-auto font-bold text-white text-3xl "> Forgot Password</h1>
                 <div className="w-full h-7 text-center text-lg text-red-600" >{modal.message}</div>
-                                <button onClick={cookie}>set cookie</button>
                                 </div>
                                 {/* <div className="w-full h-7 text-center text-lg text-red-600" >{titleslog}</div> */}
                                 <br />

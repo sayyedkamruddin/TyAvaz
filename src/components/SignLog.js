@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import noteContext from "../context/noteContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 const SignLog = () => {
   const [chckbox, setChckbox] = useState("password");
   const [swicth, setSwicth] = useState(true);
@@ -131,6 +132,7 @@ const SignLog = () => {
         // const logres = await axios.post("http://192.168.1.208:3001/log", userl);
         // pc use
         const logres = await axios.post("http://localhost:3001/log",userl);
+        console.log(logres);
 
         console.log("requsted")
 
@@ -138,7 +140,11 @@ const SignLog = () => {
         if (logres.statusText === "success") {
           contecs.update(logres.data);
           navigate("/")
-          alert("successfull")
+          // alert("successfull")
+          Cookies.set("user",logres.data.token,{
+            expires:1,
+          })
+          console.log(logres.data.token);
         } else if (logres.data === "not match") {
           setTitleslog("invalid password");
           setTimeout(() => {

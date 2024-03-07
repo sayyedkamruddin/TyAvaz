@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
@@ -15,9 +15,10 @@ import micGif from './googleVoice.gif'
 import { MdContentCopy,MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
-
+import noteContext from '../context/noteContext';
 
 export default function Avaz() {
+  const access=useContext(noteContext)
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
   const [input, setInput] = useState("")
@@ -430,8 +431,8 @@ console.log(chatChange.current.childNodes);
               <div className=' flex items-center gap-2  '>
                 <LuUserCircle2 className=' w-5/6 h-full bg-white rounded-full' />
                 <div className=' text-base  text-white'>
-                  <p>NAME-XYZ</p>
-                  <p className=' text-neutral-500 text-xs'>XYZ@gmail.com</p>
+                  <p></p>
+                  <p className=' text-neutral-500 text-xs'></p>
                 </div>
               </div>
             </Link>
