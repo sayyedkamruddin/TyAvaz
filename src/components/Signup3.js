@@ -5,7 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from 'react-redux'
 import { updateBydataTrue,updateByDefaultFalse } from '../redux/counter/conterSlice';
-const SignLog = () => {
+const Signup3 = () => {
   const userValue = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
@@ -290,11 +290,11 @@ console.log(userValue+"..+++++++++");
   }
   // }
   return (
-    <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex ">
-      <div className="img w-7/12 h-full max-[768px]:hidden">
-        <img src="http://localhost:3000/6.png" className=" w-full h-full"></img>
+      <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex justify-center">
+      <div className="img w-6/12   max-[768px]:hidden border">
+        <img src="/2007.i039.019_cyber_security_spyware_data_protection_isometric_set-06-removebg-preview.png" className=" w-full h-full"></img>
       </div>
-      <div className="img w-5/12  bg-[#000] max-[768px]:w-full h-full max-[768px]:overflow-hidden shadow-inner flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
+      <div className="img w-6/12  bg-white max-[768px]:w-full h-full max-[768px]:overflow-hidden border shadowinner flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
         <div className="relative  h-[73%]  bg-[#111111] w-5/6 max-[768px]:w-11/12 rounded-ss-[0px]  rounded-lg ">
           <div className="bg-[#111111]  absolute -top-10 flex h-10 left-0 rounded-t-lg  w-64">
             <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-md ${sg}`}>
@@ -369,8 +369,8 @@ console.log(userValue+"..+++++++++");
             <div className="w-full mt-4 h-[10%] max-[768px]:h-[6%] max-[768px]:mt-2 ">
               <h2 className=" font-black font-serif text-2xl text-center ">Register</h2>
             </div>
-            <div className="w-full h-40 max-[768px]:mt-2">
-              <h3 className="font-serif text-xl text-center text-red-600 ">{titles}</h3>
+            <div className="w-full h-[3%] max-[768px]:mt-2">
+              <h3 className="font-serif text-xl text-center text-red-600">{titles}</h3>
             </div>
             <form onSubmit={signup} className="w-full h-full flex">
               <div className="w-full h-4/5 rounded-es-2x">
@@ -589,7 +589,6 @@ console.log(userValue+"..+++++++++");
 
       </div>
     </div>
-
   );
 };
-export default SignLog;
+export default Signup3;

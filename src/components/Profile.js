@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from "react";import { useSelector, useDispatch } from 'react-redux'
+import { updateBydataTrue,updateByDefaultFalse } from '../redux/counter/conterSlice';
 export default function Profile(props) {
-  const {Fname, Lname, Email, Phone, City }=props.data;
+  // const {Fname, Lname, Email, Phone, City }=props.data;
+  const userValue = useSelector((state) => state.user)
+  const {Fname, Lname, Email, Phone, City }=userValue;
+
   const [imgsrc, setImgsrc] = useState("http://localhost:3000/dp.png");
   const [ct, setCt] = useState({
             "Fname":Fname,
             "Lname":Lname,
             "Email":Email,
             "Phone":Phone,
-            "City":City});
+            "City":City
+          });
 
   const bd = "";
   return (

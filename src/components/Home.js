@@ -7,21 +7,36 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaTwitterSquare } from "react-icons/fa";
 import { BsGoogle } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import noteContext from "../context/noteContext";
+// import noteContext from "../context/noteContext";
 import axios from "axios";
-
+import { useSelector, useDispatch } from 'react-redux'
+import { updateBydataTrue,updateByDefaultFalse } from '../redux/counter/conterSlice';
 import Cookies from 'js-cookie';
 export default function Home() {
+  const userValue = useSelector((state) => state.user)
+  console.log(userValue.Token+"redux ...........From home.JS....");
+
   const imgs = ["https://png.pngtree.com/background/20231117/original/pngtree-city-of-the-future-3d-rendered-ai-robot-in-urban-landscape-picture-image_6299969.jpg",
     "https://miro.medium.com/v2/resize:fit:750/1*PlOTeS5syDCWSrYDUb7J7w.jpeg",
     "https://media.wired.co.uk/photos/606db957c99f3d4d31739e74/16:9/w_1280,c_limit/ed86af6ae5769fb3c72f82c959f0d422.png"]
   const CardHeadings = ["Chat Bot", "AVAZ", "Jarvis"]
 
 
-  const context=useContext(noteContext)
+  const dispatch = useDispatch()
+
+
+  // const context=useContext(noteContext)
+  const user={
+    Token:true,
+    Fname:"kammo",
+    lname:"sayyed",
+    Phone:"8529637410",
+    Email:"jjkajsk",
+    City:"Thane"
+  }
 useEffect(()=>{
   
-  CookieAuth()
+  // CookieAuth()
 
 },[])
 
@@ -30,27 +45,32 @@ useEffect(()=>{
 const CookieAuth= async()=>{
   const Cget=Cookies.get('user')
   console.log(Cget!=undefined +" .......");
-
+  try {
+  
   if (Cget!=undefined) {
-    
   console.log(Cget+"...........hjkhkh..........")
   const cookieVerification =await axios.post("http://localhost:3001/tokenAuth",{Cget});
-
   if (cookieVerification.statusText==='Authenticated') {
-    
     console.log(cookieVerification.data);
     console.log(cookieVerification.statusText);
-    context.update(cookieVerification.data);
+    // context.update(cookieVerification.data);
+  dispatch(updateBydataTrue(cookieVerification.data))
+
   } else {
     console.log(cookieVerification.statusText);
     Cookies.remove('user')
-    context.logout()
+    // context.logout()
+  dispatch(updateByDefaultFalse())
+
 
   }
 }
-  
-
+} catch (error) {
+    // alert("something Error try later")
+    // window.location.reload(true)
 }
+}
+
   return (
     
     <div className=' relative'>

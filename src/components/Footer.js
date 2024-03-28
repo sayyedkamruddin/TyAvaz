@@ -7,7 +7,7 @@ import { BsGoogle } from "react-icons/bs";
 import { Link, useLocation } from 'react-router-dom';
 export default function 
 () {
-    const location=useLocation().pathname
+  const location=useLocation().pathname
   return (
     <div>
         
@@ -25,7 +25,7 @@ export default function
       </div> */}
       {/* footer-1 end */}
         {/* footer-2 start   */}
-      { location!="/ai" && location!="/sign" && location!="/profile"  && location!="/new" && location!="/new1" && location!="/AVAZ" && location!="/forgot" &&
+      { location!="/ai" && location!="/sign" && location!="/profile" && location!="/ai" && location!="/Avaz" && 
         <div className='FOOTER'>
 
 <div className='  w-full bg-neutral-100 px-20 py-5 space-y-10'>

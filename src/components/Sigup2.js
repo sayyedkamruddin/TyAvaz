@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import noteContext from "../context/noteContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector, useDispatch } from 'react-redux'
 import { updateBydataTrue,updateByDefaultFalse } from '../redux/counter/conterSlice';
-const SignLog = () => {
+const Sigup2 = () => {
   const userValue = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
@@ -32,8 +32,8 @@ console.log(error);
 
   const [chckbox, setChckbox] = useState("password");
   const [swicth, setSwicth] = useState(true);
-  const [clr, setClr] = useState("gray");
-  const [bclr, setBClr] = useState(" bg-blue-500 hover:bg-blue-600");
+  const [clr, setClr] = useState("rgb(58,45,153)");
+  const [bclr, setBClr] = useState(" bg-[rgb(37,38,40)] hover:bg-[rgb(71,72,74)] ");
   const contecs = useContext(noteContext);
 
   const [reado, setReado] = useState("");
@@ -41,7 +41,7 @@ console.log(error);
   const [titles, setTitles] = useState("");
   const [titleslog, setTitleslog] = useState("");
 
-  const [sg, setSg] = useState("shadow-inner bg-[#111111] font-semibold text-xl transition-all duration-700 rounded-ee-[45px]  ");
+  const [sg, setSg] = useState("shadowinner bg-white font-semibold text-xl transition-all duration-700 rounded-ee-[45px]  ");
   let name, valiue;
   const [user, setUser] = useState({
     Fname: "", 
@@ -67,7 +67,7 @@ console.log(error);
         setTimeout(() => {
           setBClr("bg-blue-500 hover:bg-blue-600")
           setReado("");
-        }, 6000);
+        }, 3000);
         //  mobile use change the ip 
 
         // const otpres = await axios.post("http://192.168.1.208:3001/otp", user);
@@ -79,9 +79,18 @@ console.log(error);
       }
       else {
         setTitles('enter Email');
+        setTimeout(() => {
+         
+          setTitles("");
+        }, 3000);
       }
     } catch {
 
+      setTitles('Server Error Please Try Again Later!!');
+        setTimeout(() => {
+         
+          setTitles("");
+        }, 3000);
     }
 
   }
@@ -121,7 +130,7 @@ console.log(cookieVerification.data+"logut forom signlogin page");
             setTitles('');
           }, 6000);
           setSwicth(false);
-          setLg("shadow-inner bg-[#111111] font-semibold text-xl transition-all duration-300 rounded-es-[45px]");
+          setLg("shadowinner bg-white  font-semibold text-xl transition-all duration-300 rounded-es-[45px]");
           setSg(" bg-gray-200 text-black font-normal text-base transition-all duration-300 rounded-ee-[45px] ")
           // alert("successfully submited"+response.data);
 
@@ -158,6 +167,11 @@ console.log(cookieVerification.data+"logut forom signlogin page");
       }
     } catch (error) {
       console.log(error);
+      setTitles("Server Error");
+
+      setTimeout(() => {
+        setTitleslog('');
+      }, 3000);
     }
 
   }
@@ -191,20 +205,25 @@ console.log(userValue+"..+++++++++");
           setTitleslog("invalid password");
           setTimeout(() => {
             setTitleslog('');
-          }, 6000);
+          }, 3000);
         }
         else {
           setTitleslog("user not exist");
           setTimeout(() => {
             setTitleslog('');
-          }, 6000);
+          }, 3000);
         }
 
       }
       else {
         setTitles('enter Email');
       }
-    } catch {
+    } catch(e) {
+      console.log(e);
+      setTitles('Server Error');
+      setTimeout(() => {
+        setTitleslog('');
+      }, 3000);
 
     }
 
@@ -279,25 +298,67 @@ console.log(userValue+"..+++++++++");
   // switch for sign and log{
   function logform() {
     setSwicth(false);
-    setLg("shadow-inner font-semibold text-xl transition-all duration-100 bg-[#111111] ");
+    setLg("shadowinner font-semibold text-xl transition-all duration-100 bg-white ");
     setSg(" bg-gray-200 text-black font-normal text-base transition-all duration-100 rounded-ee-[45px] ")
   }
 
   function signform() {
     setSwicth(true);
     setLg(" bg-gray-200 text-black rounded-es-[45px] font-normal text-base transition-all duration-100");
-    setSg("shadow-inner font-semibold text-xl transition-all duration-100 bg-[#111111]  ")
+    setSg("shadowinner font-semibold text-xl transition-all duration-100 bg-white  ")
   }
   // }
+
+
+
+
+// cookie AUTH logic
+const CookieAuth= async()=>{
+  const Cget=Cookies.get('user')
+  console.log(Cget!=undefined +" .......");
+  console.log(Cget);
+  try {
+  
+  if (Cget!=undefined) {
+  console.log(Cget+"...........hjkhkh..........")
+  const cookieVerification =await axios.post("http://localhost:3001/tokenAuth",{Cget});
+  if (cookieVerification.statusText==='Authenticated') {
+    console.log(cookieVerification.data);
+    console.log(cookieVerification.statusText+".......App.js Cookie");
+    const {Fname,Lname,Email,Phone,City}=cookieVerification.data
+    dispatch(updateBydataTrue(cookieVerification.data))
+    console.log(userValue.Token)
+
+    navigate('/ai')
+
+  } else {
+    console.log(cookieVerification.statusText+".......App.js Cookie");
+    Cookies.remove('user')
+  dispatch(updateByDefaultFalse())
+
+
+  }
+}
+} catch (error) {
+    // alert("something Error try later")
+    // window.location.reload(true)
+}
+}
+
+useEffect(()=>{
+
+  CookieAuth()
+})
   return (
-    <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex ">
-      <div className="img w-7/12 h-full max-[768px]:hidden">
-        <img src="http://localhost:3000/6.png" className=" w-full h-full"></img>
+    <div className="w-full h-full absolute top-30 pt[4rem] text-black flex justify-center bg-white ">
+       
+      <div className="img  max-[768px]:hidden">
+        <img src="/2007.i039.019_cyber_security_spyware_data_protection_isometric_set-06.jpg" className=" w-full h-full"></img>
       </div>
-      <div className="img w-5/12  bg-[#000] max-[768px]:w-full h-full max-[768px]:overflow-hidden shadow-inner flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
-        <div className="relative  h-[73%]  bg-[#111111] w-5/6 max-[768px]:w-11/12 rounded-ss-[0px]  rounded-lg ">
-          <div className="bg-[#111111]  absolute -top-10 flex h-10 left-0 rounded-t-lg  w-64">
-            <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-md ${sg}`}>
+      <div className="img w-5/12  bg[#000] max-[768px]:w-full h-full max-[768px]:overflow-hidden shadowinner  flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
+        <div className="relative  h[73%] bg-white  bg[#111111] w-5/6 max-[768px]:w-11/12 rounded-ss-[0px]  rounded-lg shadow-xl ">
+          <div className="bg[#111111] bg-white text-black  absolute -top-10 flex h-10 left-0 rounded-t-lg  w-64">
+            <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-md  ${sg}`}>
               Sign-up
             </button>
             <button onClick={logform} className={` w-32 h-10   text-center rounded-se-md rounde p-1  ${lg}`}>Login</button>
@@ -306,8 +367,8 @@ console.log(userValue+"..+++++++++");
             <div className=" w-full h-full flex justify-center items-center ">
               <form onSubmit={login} className='w-10/12 h-96  flex-col'>
                 <div className="w-full p-2 h-auto">
-                  <h1 className="w-full text-center p-2 h-auto font-bold text-white text-3xl "> WELCOME BACK  </h1>
-                  <h2 className="w-full text-center p-2 h-8 font-bold text-white text-xl ">Login</h2>
+                  <h1 className="w-full text-center p-2 h-auto font-bold textwhite text-3xl "> WELCOME BACK  </h1>
+                  <h2 className="w-full text-center p-2 h-8 font-bold textlswhite text-xl ">Login</h2>
 
                 </div>
                 <div className="w-full h-7 text-center text-lg text-red-600" >{titleslog}</div>
@@ -319,12 +380,12 @@ console.log(userValue+"..+++++++++");
                       placeholder=''
                       value={userl.Username}
                       onChange={onChngInptlog}
-                      className=' shadow-lg  bg-transparent peer focus:outline-none text-xl px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
+                      className=' shadow-lg  bg-transparent peer focus:outline-none text-xl px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent '>
                     </input>
-                    <label htmlFor='pus' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
+                    <label htmlFor='pus' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-white -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 
-           peer-focus:text-[#2cffe6] peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
+           peer-focus:text-[rgb(58,45,153)] peer-focus:bg-white
+					 peer-placeholder-shown:top-1 peer-valid:bg-white
 					peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 ">Username</label> </div>
                   <i></i>
@@ -338,25 +399,31 @@ console.log(userValue+"..+++++++++");
                       placeholder=''
                       value={userl.Pass_word}
                       onChange={onChngInptlog}
-                      className=' shadow-lg  bg-transparent peer focus:outline-none text-xl   px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
+                      className=' shadow-lg  bg-transparent peer focus:outline-none text-xl   px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent '>
                     </input>
-                    <label htmlFor='ps' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
+                    <label htmlFor='ps' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-white  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 
-           peer-focus:text-[#2cffe6] peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
+           peer-focus:text-[rgb(58,45,153)] peer-focus:bg-white
+					 peer-placeholder-shown:top-1 peer-valid:bg-white
 					peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 ">password</label> </div>
                   <i></i>
                 </div>
-                <div className="w-full left-24 h-auto flex float-start items-center gap-2 max-[768px]:left-5  relative text-blue-700  my-3">
+                <div className="w-full left-24 h-auto flex float-start flex-row itemscenter justify-between  max-[768px]:left-5  relative text-blue-700  my-3">
+                  <div className=" flex flex-row gap-1 items-center ">
                   <input type='checkbox' onChange={() => { chckbox === "password" ? setChckbox("text") : setChckbox("password") }} className=' '>
                   </input>
-                  <span className='ml- max-[768px]:left-0 max-[768px]:absolute text-[#2cffe6]' >show password</span>
-                  <Link to="/forgot" className='absolute right-48 max-[768px]:right-12 text-[#2cffe6]' >forgot</Link>
+                  <span className='ml- max-[768px]:left-\0 max-[768px]:abolute text-[rgb(58,45,153)] pr-4 ' >show password</span>
+                  </div>
+
+                  <div>
+                    
+                  <Link to="/forgot" className='absolute right-48 max-[768px]:right-12 text-[rgb(58,45,153)]' >forgot</Link>
+                  </div>
 
                 </div>
                 <div className=' w-full my-4 flex justify-center items-center h-12'>
-                  <input className='w-24 bg-[#2cffe6] mt-5 rounded-lg cursor-pointer text-black font-serif h-9 ' type='submit' value="Login"></input>
+                  <input className='w-24 bg-[rgb(37,38,40)] hover:bg-[rgb(71,72,74)] mt-5 rounded-lg cursor-pointer text-white font-serif h-9 ' type='submit' value="Login"></input>
                 </div>
                 <div>
                   <a></a>
@@ -369,8 +436,8 @@ console.log(userValue+"..+++++++++");
             <div className="w-full mt-4 h-[10%] max-[768px]:h-[6%] max-[768px]:mt-2 ">
               <h2 className=" font-black font-serif text-2xl text-center ">Register</h2>
             </div>
-            <div className="w-full h-40 max-[768px]:mt-2">
-              <h3 className="font-serif text-xl text-center text-red-600 ">{titles}</h3>
+            <div className="w-full h-[3%] max-[768px]:mt-2">
+              <h3 className="font-serif text-xl text-center text-red-600">{titles}</h3>
             </div>
             <form onSubmit={signup} className="w-full h-full flex">
               <div className="w-full h-4/5 rounded-es-2x">
@@ -385,14 +452,15 @@ console.log(userValue+"..+++++++++");
                       value={user.Fname}
                       onChange={onChangeInput}
                       placeholder="shakib" //don't remove placeholder it's float then
-
-                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      pattern="[A-Za-z]+"
+                      title="only aphabets allow "
+                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="First-Name"
-                      className=" text-[rgb(95 99 104)] bg-[#111111]  transition-all duration-300 absolute left-9 text-sm font-mono  -top-4 px-2
-					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className=" peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  transition-all duration-300 absolute left-9 text-sm font-mono  -top-4 px-2
+					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -406,16 +474,18 @@ console.log(userValue+"..+++++++++");
                       name="Lname"
                       type="text"
                       value={user.Lname}
+                      pattern="[A-Za-z]+"
+                      title="only aphabets allow"
                       onChange={onChangeInput}
                       required
                       placeholder="shakib"
-                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="Last-Name"
-                      className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-base    peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className=" transition-all duration-300 absolute left-9 text-sm font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+					 peer-placeholder-shown:text-base    peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -434,13 +504,13 @@ console.log(userValue+"..+++++++++");
                       onChange={onChangeInput}
                       required
                       placeholder="shakib"
-                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="email"
-                      className=" transition-all duration-300 absolute  left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className=" transition-all duration-300 absolute  left-9 text-sm font-mono peer-focus:text-[rgb(58,45,153)] bg-white text-gray-500  -top-4 px-2
+					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -452,20 +522,20 @@ console.log(userValue+"..+++++++++");
                     <input
                       id="number"
                       type="text"
-                      title="'invailid number"
-                      pattern="[6789][0-9]{9}"
+                      title="minmum 10 digit & must start with 6,7,8,9"
+                      pattern="([6789][0-9]{9})"
                       name="Phone"
                       value={user.Phone}
                       onChange={onChangeInput}
                       required
                       placeholder="shakib"
-                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 invalid:border-red-600 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 invalidborder-red-600 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="number"
-                      className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className=" transition-all duration-300 absolute left-9 text-sm font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -481,17 +551,19 @@ console.log(userValue+"..+++++++++");
                       onChange={matchpass}
                       name="Password"
                       value={user.Password}
+                      title="minimum 8 latters includes one symbol, digit, capital latter"
+                      pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"
 
                       type="Password"
                       required
                       placeholder="shakib"
-                      className={` shadow-lg  bg-transparent peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300    placeholder-transparent `}
+                      className={` shadow-lg  bg-transparent peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[${clr}] border-gray-300    placeholder-transparent `}
                     ></input>
                     <label
                       htmlFor="Password"
-                      className="  transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className="  transition-all duration-300 absolute left-9 text-sm font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -508,13 +580,13 @@ console.log(userValue+"..+++++++++");
                       value={user.CPassword}
                       required
                       placeholder="shakib"
-                      className={`   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300 placeholder-transparent `}
+                      className={`   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[${clr}] border-gray-300 placeholder-transparent `}
                     ></input>
                     <label
                       htmlFor="PasswordC"
-                      className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
+                      className=" transition-all duration-300 absolute left-9 text-sm font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-white
+					 peer-placeholder-shown:top-2 peer-valid:bg-white
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -529,12 +601,14 @@ console.log(userValue+"..+++++++++");
                     <input name="City" list="city-list"
                       placeholder="shakib"
                       value={user.City}
+                      pattern="[A-Za-z]+"
+                      title="only aphabets allow"
                       onChange={onChangeInput}
-                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent " id="City">
+                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent " id="City">
                     </input>
-                    <label htmlFor='City' className=" transition-all duration-300 absolute left-9 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
-					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
+                    <label htmlFor='City' className=" transition-all duration-300 absolute left-9 text-base font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-white
+					 peer-placeholder-shown:top-1 peer-valid:bg-white
 					peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 ">city</label>
                     <datalist id="city-list">
@@ -559,16 +633,17 @@ console.log(userValue+"..+++++++++");
                       required
                       value={user.Otp}
                       onChange={onChangeInput}
-
+                      // pattern="[0-9]{1,6}"
+                      // title="required 6 digit number "
                       placeholder="shakib"
-
-                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      // maxLength='6'
+                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[rgb(58,45,153)] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="otp"
-                      className=" transition-all duration-300 absolute left-9 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-                    peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
-                    peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
+                      className=" transition-all duration-300 absolute left-9 text-base font-mono peer-focus:text-[rgb(58,45,153)] text-gray-500 bg-white  -top-4 px-2
+                    peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-white
+                    peer-placeholder-shown:top-1 peer-valid:bg-white
                    peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                     >
@@ -578,8 +653,8 @@ console.log(userValue+"..+++++++++");
                 </div>
                 <i></i>{" "}
                 <div className="w-full my-6 flex justify-around">
-                  <button disabled={reado} onClick={otpGenerate} className={` w-40 h-10 rounded-xl   text-lg text-white max-[768px]:w-28  text-center ${bclr} `}> get OTP</button>
-                  <input type="submit" value="submit" className=" w-40 h-10 rounded-xl bg-blue-500 hover:bg-blue-600 max-[768px]:w-28 text-lg text-white text-center  "></input>
+                  <button disabled={reado} onClick={otpGenerate} className={` w-40 h-10 rounded-xl   text-lg text-white max-[768px]:w-28   text-center ${bclr} `}> get OTP</button>
+                  <input type="submit" value="submit" className=" w-40 h-10 rounded-xl bg-[rgb(37,38,40)] hover:bg-[rgb(71,72,74)]  max-[768px]:w-28 text-lg text-white text-center  "></input>
 
                 </div>
               </div>
@@ -592,4 +667,4 @@ console.log(userValue+"..+++++++++");
 
   );
 };
-export default SignLog;
+export default Sigup2;
